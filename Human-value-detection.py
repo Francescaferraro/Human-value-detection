@@ -14,6 +14,8 @@
 
 # +
 import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
 import transformers
 import torch
 from transformers import pipeline
@@ -85,6 +87,34 @@ else:
     for i in range(len(arguments)):
         input[arguments[i]] = (stances[i], conclusions[i])
 
+
+def radial_plot(results):
+    # Create a list of adjectives and their probabilities
+    adjectives = list(results.keys())
+    probabilities = list(results.values())
+
+    # Compute angle for each adjective
+    angles = np.linspace(0, 2 * np.pi, len(adjectives), endpoint=False).tolist()
+
+    # The figure is plotted in a polar projection
+    fig, ax = plt.subplots(figsize=(3, 3), subplot_kw=dict(polar=True))
+    
+    # Plot each line separately
+    for i in range(len(adjectives)):
+        ax.plot([angles[i], angles[i]], [0, probabilities[i]], color='blue')
+    
+    # Fill the area under the curve
+    ax.fill(angles, probabilities, 'blue', alpha=0.1)
+    
+    # Set the yticks to be empty and xticks to be the adjectives
+    ax.set_yticklabels([])
+    ax.set_xticks(angles)
+    ax.set_xticklabels(adjectives)
+    
+    # Display the plot
+    plt.show()
+
+
 # +
 import random
 
@@ -120,20 +150,22 @@ def generate_word(model):
     return predictions, description
 
 
-print(f"{generate_word(model_bert)[0]}\n\n{generate_word(model_bert)[1]}")
+generate_word(model_bert)
 
-adjective_list = [
+radial_plot(generate_word(model_bert)[0])
+
+adjective_list_ordered = [ 
     "conservative",
-    "liberal",
     "republican",
+    "capitalist",
     "libertarian",
+    "centrist",
     "democrat",
+    "liberal",
     "progressive",
     "socialist",
     "communist",
     "anarchist",
-    "centrist",
-    "capitalist",
 ]
 
 
@@ -160,19 +192,18 @@ def generate_word_adj(model, tokenizer, adjective_list):
         # Store the probability of the word
         probabilities[word] = word_prob
 
+    # Sort the probabilities dictionary by value in descending order
+    sorted_probabilities = {k: v for k, v in sorted(probabilities.items(), key=lambda item: item[1], reverse=True)}
+
     # Choose the word with the highest probability
-    top_word = max(probabilities, key=probabilities.get)
+    top_word = next(iter(sorted_probabilities))
 
     # Replace the mask token in the original prompt with the top word
     description = prompt.replace(tokenizer.mask_token, top_word)
 
-    return probabilities, description
+    return sorted_probabilities, description
 
 
-print(f"{generate_word_adj(model, tokenizer, adjective_list)[0]}\n\n{generate_word_adj(model, tokenizer, adjective_list)[1]}")
+generate_word_adj(model, tokenizer, adjective_list)
 
-
-
-
-
-
+radial_plot(generate_word_adj(model, tokenizer, adjective_list)[0])

@@ -154,18 +154,11 @@ generate_word(model_bert)
 
 radial_plot(generate_word(model_bert)[0])
 
-adjective_list_ordered = [ 
-    "conservative",
-    "republican",
-    "capitalist",
-    "libertarian",
-    "centrist",
-    "democrat",
-    "liberal",
-    "progressive",
-    "socialist",
-    "communist",
-    "anarchist",
+adjective_list = [ 
+    "conservative","republican","capitalist",
+    "libertarian","centrist","democrat",
+    "liberal","progressive","socialist",
+    "communist","anarchist",
 ]
 
 
@@ -201,9 +194,9 @@ def generate_word_adj(model, tokenizer, adjective_list):
     # Replace the mask token in the original prompt with the top word
     description = prompt.replace(tokenizer.mask_token, top_word)
 
-    return sorted_probabilities, description
+    return probabilities, sorted_probabilities, description
 
 
-generate_word_adj(model, tokenizer, adjective_list)
+generate_word_adj(model, tokenizer, adjective_list)[1:]
 
 radial_plot(generate_word_adj(model, tokenizer, adjective_list)[0])

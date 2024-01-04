@@ -349,14 +349,15 @@ for adj, prob in desc_order_probabilities.items():
         human_value = [VALUE_LABELS.get(k) for k in human_value]
         if None not in human_value:
             desc_order[tuple(human_value)] = prob
+            
 for values, prob in desc_order.items():
     for value in values:
         if value not in value_probs:
             value_probs[value] = 0
-        value_probs[value] += prob / total_prob
-        
-value_probs = sort_elements(value_probs)
+        value_probs[value] += prob
+
 total_prob = sum(value_probs.values())
+
 # Normalize
 normalized_probs = {k: v / total_prob for k, v in value_probs.items()}
 

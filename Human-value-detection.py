@@ -643,9 +643,6 @@ def plot_results_byValues(metrics) :
                         ha='center', va='bottom')
     fig.tight_layout()
     plt.show()
-    print("Legend:")
-    for num, human_value in legend_dict.items():
-        print(f"{num}: {human_value}")
 
 
 plot_results_byValues(metrics_free)

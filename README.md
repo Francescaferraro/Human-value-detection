@@ -4,6 +4,6 @@ This work is composed of 2 main steps: the first is about the prompting strategy
 
 Therefore, this repository is divided into 4 directories:
 - "Datasets" : contains the original arguments and the three versions of the dataset, i.e. the original and the two versions of the expansions.
-- "Prompting strategy" : contains both the .py file and the notebook with the cells outputs for the first part of the work, about the results obtained by the prompting strategy with dictionary associations.
+- "Prompting strategy" : contains both the .py file and the notebook with the cells outputs for the first part of the work, about the results obtained by the prompting strategy with dictionary associations, and the dictionary itself.
 - "Classification" : contains the notebooks for the classification step, done separately with BORN and BERT.
 - "Documents" : contains documents that could help to understand the workflow process.
